@@ -1,0 +1,37 @@
+-- Таблица пользователей
+CREATE TABLE users (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Автоинкрементный идентификатор
+    name VARCHAR(255) NOT NULL,  -- Уникальное имя пользователя
+    password VARCHAR(255) NOT NULL,  -- Пароль
+    email VARCHAR(255) NOT NULL,  -- Email
+    role VARCHAR(20) NOT NULL DEFAULT 'user'  -- Роль по умолчанию - 'user'
+);
+
+-- Таблица администраторов
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Автоинкрементный идентификатор
+    name VARCHAR(255) NOT NULL,  -- Имя администратора
+    password VARCHAR(255) NOT NULL  -- Пароль
+);
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- Автоинкрементный идентификатор
+    name VARCHAR(255) NOT NULL,  -- Имя администратора
+    password VARCHAR(255) NOT NULL,  -- Пароль
+    role VARCHAR(20) NOT NULL DEFAULT 'admin',  -- Роль, по умолчанию 'admin'
+    email VARCHAR(255) NOT NULL  -- Email администратора
+);
+
+ALTER TABLE admins
+ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'admin',
+ADD COLUMN email VARCHAR(255) NOT NULL;
+
+INSERT INTO users (name, password, email, role) 
+VALUES 
+('user1', 'password1', 'user1@example.com', 'user'),
+('user2', 'password2', 'user2@example.com', 'user');
+
+INSERT INTO admins (name, password, email, role) 
+VALUES 
+('admin1', 'adminpassword1', 'admin1@example.com', 'admin'), 
+('admin2', 'adminpassword2', 'admin2@example.com', 'admin');

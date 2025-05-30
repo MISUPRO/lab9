@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Простое переключение вкладок
+        function openTab(evt, tabName) {
+            const tabs = document.querySelectorAll(".tab-content");
+            tabs.forEach(tab => tab.classList.add("hidden"));
+
+            const buttons = document.querySelectorAll(".tab-button");
+            buttons.forEach(btn => btn.classList.remove("border-b-2", "border-blue-600", "text-blue-600"));
+
+            document.getElementById(tabName).classList.remove("hidden");
+            evt.currentTarget.classList.add("border-b-2", "border-blue-600", "text-blue-600");
+        }
+        window.addEventListener('DOMContentLoaded', () => {
+            // По умолчанию открываем первую вкладку
+            document.querySelector(".tab-button").click();
+        });
+    </script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+<div class="max-w-6xl mx-auto bg-white rounded-xl shadow-md p-6">
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+
+    <!-- Вкладки -->
+    <div class="flex space-x-4 mb-6 border-b border-gray-300">
+        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600" onclick="openTab(event, 'regionTab')">Regions</button>
+        <button class="tab-button px-4 py-2 font-semibold text-gray-600 hover:text-blue-600" onclick="openTab(event, 'userTab')">Users</button>
+    </div>
+
+    <!-- Вкладка Regions -->
+    <div id="regionTab" class="tab-content hidden">
+        <form method="post" action="/admin/region/add" class="mb-6 flex gap-2">
+            <input type="text" name="region_name" placeholder="New Region" required class="flex-grow px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                Add
+            </button>
+        </form>
+
+        <table class="w-full border-collapse border border-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Region Name</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="region : ${regions}" class="hover:bg-gray-100">
+                <td class="border border-gray-300 px-4 py-2" th:text="${region.id_region}"></td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${region.region_name}"></td>
+                <td class="border border-gray-300 px-4 py-2 space-x-2">
+                    <form method="post" action="/admin/region/edit" class="inline-flex items-center gap-2">
+                        <input type="hidden" name="id" th:value="${region.id_region}" />
+                        <input type="text" name="region_name" th:placeholder="${region.region_name}" required class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                        <button ype="submit" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition">
+                            Edit
+                        </button>
+                    </form>
+                    <form method="post" action="/admin/region/delete" class="inline">
+                        <input type="hidden" name="id" th:value="${region.id_region}" />
+                        <button type="submit" onclick="return confirm('Are you sure?')" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Вкладка Users -->
+    <div id="userTab" class="tab-content hidden">
+        <form method="post" action="/admin/user/add" class="mb-6 flex gap-2">
+            <input type="text" name="name" placeholder="Name" required class="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+            <input type="email" name="email" placeholder="Email" required class="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+            <input type="password" name="password" placeholder="Password" required class="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+            <select name="role" class="px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                <option value="user" selected>User</option>
+                <option value="admin">Admin</option>
+            </select>
+            <button
+                    type="submit"
+                    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+            >
+                Add
+            </button>
+        </form>
+
+        <table class="w-full border-collapse border border-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Name</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Email</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Role</th>
+                <th class="border border-gray-300 px-4 py-2 text-left">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${users}" class="hover:bg-gray-100">
+                <td class="border border-gray-300 px-4 py-2" th:text="${user.idUser}"></td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${user.name}"></td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${user.email}"></td>
+                <td class="border border-gray-300 px-4 py-2" th:text="${user.role}"></td>
+                <td class="border border-gray-300 px-4 py-2 space-x-2">
+                    <form method="post" action="/admin/user/edit" class="inline-flex items-center gap-2">
+                        <input type="hidden" name="id" th:value="${user.idUser}" />
+                        <input type="text" name="name" th:placeholder="${user.name}" required class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                        <input type="email" name="email" th:placeholder="${user.email}" required class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+                        <select name="role" class="px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" required>
+                            <option value="user" th:selected="${user.role == 'user'}">User</option>
+                            <option value="admin" th:selected="${user.role == 'admin'}">Admin</option>
+                        </select>
+                        <button type="submit"class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition">Edit</button>
+                    </form>
+                    <form method="post" action="/admin/user/delete" class="inline">
+                        <input type="hidden" name="id" th:value="${user.idUser}" />
+                        <button type="submit"  onclick="return confirm('Are you sure?')" class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+</body>
+</html>

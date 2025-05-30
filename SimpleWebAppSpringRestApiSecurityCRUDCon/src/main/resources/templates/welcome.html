@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <title>CRUD Таблица</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-8">
+<div class="max-w-5xl mx-auto bg-white rounded-xl shadow-md p-6">
+
+    <h1 class="text-3xl font-bold text-gray-800 mb-6">Данные загрязнений</h1>
+
+    <!-- Форма добавления -->
+    <form method="post" action="/welcome/pollution/add" class="flex space-x-4 mb-6">
+        <input
+                type="text"
+                name="pollution_level"
+                placeholder="Новый уровень загрязнения"
+                required
+                class="border rounded px-3 py-2 flex-grow"
+        />
+        <select name="region_id" required class="border rounded px-3 py-2">
+            <option value="" disabled selected>Выберите регион</option>
+            <option th:each="region : ${regions}"
+                    th:value="${region.id_region}"
+                    th:text="${region.region_name}">
+            </option>
+        </select>
+        <button
+                type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+        >
+            Добавить
+        </button>
+    </form>
+
+    <!-- Таблица данных -->
+    <table class="min-w-full border-collapse border border-gray-300">
+        <thead class="bg-gray-200">
+        <tr>
+            <th class="border border-gray-300 px-4 py-2 text-left">ID</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Уровень загрязнения</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Регион</th>
+            <th class="border border-gray-300 px-4 py-2 text-left">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="pollution : ${pollutions}" class="hover:bg-gray-50">
+            <td class="border border-gray-300 px-4 py-2" th:text="${pollution.id_pollution}"></td>
+            <td class="border border-gray-300 px-4 py-2" th:text="${pollution.pollution_level}"></td>
+            <td class="border border-gray-300 px-4 py-2" th:text="${pollution.region.region_name}"></td>
+            <td class="border border-gray-300 px-4 py-2 space-x-2">
+
+                <!-- Форма редактирования -->
+                <form method="post" action="/welcome/pollution/edit" class="inline-block">
+                    <input type="hidden" name="id" th:value="${pollution.id_pollution}" />
+                    <input
+                            type="text"
+                            name="pollution_level"
+                            th:placeholder="${pollution.pollution_level}"
+                            required
+                            class="border rounded px-2 py-1 w-32"
+                    />
+                    <button
+                            type="submit"
+                            class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 transition"
+                    >
+                        Изменить
+                    </button>
+                </form>
+
+                <!-- Форма удаления -->
+                <form method="post" action="/welcome/pollution/delete" class="inline-block"
+                      onsubmit="return confirm('Вы уверены, что хотите удалить?');">
+                    <input type="hidden" name="id" th:value="${pollution.id_pollution}" />
+                    <button
+                            type="submit"
+                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition"
+                    >
+                        Удалить
+                    </button>
+                </form>
+
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</body>
+</html>

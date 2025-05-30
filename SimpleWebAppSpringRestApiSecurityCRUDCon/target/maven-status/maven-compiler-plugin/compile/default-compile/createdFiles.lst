@@ -1,0 +1,17 @@
+org\example\simplewebappspring\model\AdminEntity.class
+org\example\simplewebappspring\repository\PollutionRepository.class
+org\example\simplewebappspring\repository\RegionRepository.class
+org\example\simplewebappspring\controller\AuthRestController$RegisterRequest.class
+org\example\simplewebappspring\repository\AdminRepository.class
+org\example\simplewebappspring\model\PollutionEntity.class
+org\example\simplewebappspring\controller\ApiController.class
+org\example\simplewebappspring\model\RegionEntity.class
+org\example\simplewebappspring\SimpleWebAppSpringApplication.class
+org\example\simplewebappspring\repository\UserRepository.class
+org\example\simplewebappspring\controller\AuthRestController.class
+org\example\simplewebappspring\security\CustomUserDetailsService.class
+org\example\simplewebappspring\controller\AuthController.class
+org\example\simplewebappspring\model\UserEntity.class
+org\example\simplewebappspring\config\SecurityConfig.class
+org\example\simplewebappspring\controller\AdminController.class
+org\example\simplewebappspring\controller\AuthRestController$LoginRequest.class
